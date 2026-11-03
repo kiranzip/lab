@@ -316,7 +316,7 @@ input.addEventListener("input", () => { lastTabList = null; });
 
 const unlockInput = () => input.removeAttribute("readonly");
 input.addEventListener("focus", unlockInput);
-input.addEventListener("click", unlockInput);
+input.addEventListener("click", e => { e.preventDefault(); unlockInput(); focusInput(); });
 input.addEventListener("blur", () => { if (!input.value) input.setAttribute("readonly", ""); });
 
 const cursor = liveLine.querySelector(".cursor");
@@ -355,8 +355,14 @@ document.addEventListener("click", e => {
 
 if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", () => {
-        if (document.activeElement === input) {
-            window.scrollTo(0, document.documentElement.scrollHeight);
+        if (document.activeElement !== input) return;
+        const vv = window.visualViewport;
+        const r = input.getBoundingClientRect();
+        const top = r.top - vv.offsetTop;
+        const bottom = top + r.height;
+        if (bottom > vv.height || top < 0) {
+            const delta = bottom > vv.height ? bottom - vv.height + 8 : top - 8;
+            window.scrollTo({ top: window.scrollY + delta, behavior: "smooth" });
         }
     });
 }
