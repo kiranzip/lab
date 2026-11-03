@@ -353,20 +353,6 @@ document.addEventListener("click", e => {
     if (!e.target.closest("a")) focusInput();
 });
 
-if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", () => {
-        if (document.activeElement !== input) return;
-        const vv = window.visualViewport;
-        const r = input.getBoundingClientRect();
-        const top = r.top - vv.offsetTop;
-        const bottom = top + r.height;
-        if (bottom > vv.height || top < 0) {
-            const delta = bottom > vv.height ? bottom - vv.height + 8 : top - 8;
-            window.scrollTo({ top: window.scrollY + delta, behavior: "smooth" });
-        }
-    });
-}
-
 function detectBrowser() {
     const ua = navigator.userAgent;
     if (/edg\//i.test(ua)) return "edge";
