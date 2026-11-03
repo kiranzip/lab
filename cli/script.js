@@ -55,7 +55,7 @@ const commands = {
             ["ls", "list the files here"],
             ["neofetch", "system info, if you will"],
             ["clear", "wipe the screen"]
-        ].map(([c, d]) => `  <b class="accent">${pad(c, 10)}</b>${d}`).join("\n");
+        ].map(([c, d]) => `  <a href="#" data-cmd="${c}"><b class="accent">${pad(c, 10)}</b></a>${d}`).join("\n");
         const more = COMPLETABLE.filter(c => c !== "help" && !HELP_MAIN.includes(c)).join(" · ");
         return `<span class="dim">Available commands:</span>
 
